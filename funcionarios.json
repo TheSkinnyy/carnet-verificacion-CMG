@@ -1,0 +1,29 @@
+[
+    {
+        "id": "001",
+        "nombre": "EFRAÍN ALEXIS ESPINOZA ROMÁN",
+        "cedula": "V-12345678",
+        "cargo": "Contralor Municipal",
+        "dependencia": "Despacho del Contralor",
+        "descripcion": "EFRAÍN ALEXIS ESPINOZA ROMÁN forma parte de la institución Contraloría General de la República, actualmente se desempeña en la CONTRALORÍA DEL MUNICIPIO GUANARE.
+
+Se agradece a todas las autoridades militares, policiales, civiles, y funcionarios de los distintos niveles de gobierno (nacional, estadal y municipal) que presten toda la ayuda y colaboración que puedan brindar al titular de este carnet.
+En caso de hurto, perdida, extravió o infracción, por favor, comunicarse a través del número de contacto 0212-5083536"
+    },
+    {
+        "id": "002",
+        "nombre": "Carlos Alberto Méndez Silva",
+        "cedula": "V-87654321",
+        "cargo": "Director de Control Fiscal",
+        "dependencia": "Dirección de Control Fiscal",
+        "fechaIngreso": "02/07/2020"
+    },
+    {
+        "id": "003",
+        "nombre": "Ana Gabriela Suárez López",
+        "cedula": "V-23456789",
+        "cargo": "Analista de Auditoría",
+        "dependencia": "Unidad de Auditoría Interna",
+        "fechaIngreso": "10/01/2022"
+    }
+]
