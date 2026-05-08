@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Verificador de Carnet - Contraloría Municipal de Guanare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #0e2a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2d6a4f;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px 25px;
+        }
+        
+        .cargando, .error, .no-encontrado {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .cargando {
+            color: #2d6a4f;
+        }
+        
+        .error {
+            color: #dc3545;
+        }
+        
+        .no-encontrado {
+            color: #856404;
+            background: #fff3cd;
+            border-radius: 10px;
+        }
+        
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 5px 0;
+            overflow: hidden;
+        }
+        
+        .info-row {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .label {
+            font-weight: bold;
+            width: 100px;
+            color: #2d6a4f;
+        }
+        
+        .value {
+            flex: 1;
+            color: #333;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6c757d;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #2d6a4f;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏛️ Contraloría Municipal de Guanare</h1>
+            <p>Sistema de Verificación de Funcionarios</p>
+        </div>
+        
+        <div class="content" id="contenido">
+            <div class="cargando">
+                <p>🔍 Cargando información del funcionario...</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Documento de verificación oficial | Carnet de Identificación
+        </div>
+    </div>
+
+    <script>
+        // Función para obtener el parámetro 'id' de la URL
+        function obtenerIdDeURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // Función principal
+        async function cargarInformacion() {
+            const idFuncionario = obtenerIdDeURL();
+            const contenedor = document.getElementById('contenido');
+            
+            // Si no hay ID en la URL
+            if (!idFuncionario) {
+                contenedor.innerHTML = `
+                    <div class="error">
+                        <p>❌ No se ha especificado un código de funcionario válido.</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">Por favor, escanee el código QR de su carnet.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            try {
+                // Cargar la base de datos de funcionarios
+                const respuesta = await fetch('funcionarios.json');
+                
+                if (!respuesta.ok) {
+                    throw new Error('No se pudo cargar la base de datos');
+                }
+                
+                const funcionarios = await respuesta.json();
+                const funcionario = funcionarios.find(f => f.id === idFuncionario);
+                
+                if (!funcionario) {
+                    contenedor.innerHTML = `
+                        <div class="no-encontrado">
+                            <p>⚠️ Funcionario no encontrado</p>
+                            <p style="font-size: 0.85rem; margin-top: 10px;">El código ${idFuncionario} no corresponde a ningún funcionario registrado.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Mostrar la información del funcionario
+                contenedor.innerHTML = `
+                    <div class="info-card">
+                        <div class="info-row">
+                            <div class="label">👤 Nombre:</div>
+                            <div class="value"><strong>${funcionario.nombre}</strong></div>
+                        </div>
+                        <div class="info-row">
+                            <div class="label">🆔 Cédula:</div>
+                            <div class="value">${funcionario.cedula}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="label">📋 Cargo:</div>
+                            <div class="value">${funcionario.cargo}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="label">🏢 Dependencia:</div>
+                            <div class="value">${funcionario.dependencia || 'No especificada'}</div>
+                        </div>
+                        <div class="info-row">
+                            <div class="label">📅 Ingreso:</div>
+                            <div class="value">${funcionario.fechaIngreso || 'No registrada'}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <span class="badge">Documento válido</span>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                contenedor.innerHTML = `
+                    <div class="error">
+                        <p>❌ Error al cargar la información</p>
+                        <p style="font-size: 0.85rem;">Por favor, intente más tarde.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Ejecutar al cargar la página
+        cargarInformacion();
+    </script>
+</body>
+</html>
+Página principal de verificación de carnets
