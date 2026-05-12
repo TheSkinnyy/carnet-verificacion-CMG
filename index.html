@@ -13,7 +13,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a472a 0%, #0e2a1a 100%);
+            background: linear-gradient(135deg, #082158 0%, #04102e 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -24,14 +24,14 @@
         .container {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             max-width: 500px;
             width: 100%;
             overflow: hidden;
         }
         
         .header {
-            background: #2d6a4f;
+            background: #082158;
             color: white;
             padding: 25px;
             text-align: center;
@@ -57,7 +57,7 @@
         }
         
         .cargando {
-            color: #2d6a4f;
+            color: #082158;
         }
         
         .error {
@@ -90,7 +90,7 @@
         .label {
             font-weight: bold;
             width: 100px;
-            color: #2d6a4f;
+            color: #082158;
         }
         
         .value {
@@ -100,21 +100,52 @@
         
         .footer {
             background: #f8f9fa;
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            font-size: 0.75rem;
-            color: #6c757d;
-            border-top: 1px solid #dee2e6;
+            border-top: 2px solid #082158;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .footer-text {
+            font-size: 0.8rem;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .footer-small {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 8px;
         }
         
         .badge {
             display: inline-block;
-            background: #2d6a4f;
+            background: #082158;
             color: white;
             font-size: 0.7rem;
-            padding: 3px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .qr-note {
+            background: #e8f0fe;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            border-left: 4px solid #082158;
+        }
+
+        .qr-note p {
+            font-size: 0.7rem;
+            color: #082158;
+            margin: 0;
         }
     </style>
 </head>
@@ -132,7 +163,16 @@
         </div>
         
         <div class="footer">
-            Documento de verificación oficial | Carnet de Identificación
+            <div class="footer-logo">
+                📜
+            </div>
+            <div class="footer-text">
+                Documento de verificación oficial
+            </div>
+            <div class="footer-small">
+                Este carnet es propiedad de la Contraloría Municipal de Guanare.<br>
+                Su uso es exclusivo del funcionario titular.
+            </div>
         </div>
     </div>
 
@@ -154,6 +194,9 @@
                     <div class="error">
                         <p>❌ No se ha especificado un código de funcionario válido.</p>
                         <p style="font-size: 0.9rem; margin-top: 10px;">Por favor, escanee el código QR de su carnet.</p>
+                        <div class="qr-note">
+                            <p>🔒 Verificación segura · Código institucional</p>
+                        </div>
                     </div>
                 `;
                 return;
@@ -175,6 +218,9 @@
                         <div class="no-encontrado">
                             <p>⚠️ Funcionario no encontrado</p>
                             <p style="font-size: 0.85rem; margin-top: 10px;">El código ${idFuncionario} no corresponde a ningún funcionario registrado.</p>
+                            <div class="qr-note">
+                                <p>📞 Comuníquese con la oficina de personal para más información</p>
+                            </div>
                         </div>
                     `;
                     return;
@@ -204,7 +250,10 @@
                             <div class="value">${funcionario.fechaIngreso || 'No registrada'}</div>
                         </div>
                         <div style="text-align: center;">
-                            <span class="badge">Documento válido</span>
+                            <span class="badge">✓ Documento válido</span>
+                        </div>
+                        <div class="qr-note">
+                            <p>🔐 Verificación en línea · Datos actualizados</p>
                         </div>
                     </div>
                 `;
@@ -214,7 +263,10 @@
                 contenedor.innerHTML = `
                     <div class="error">
                         <p>❌ Error al cargar la información</p>
-                        <p style="font-size: 0.85rem;">Por favor, intente más tarde.</p>
+                        <p style="font-size: 0.85rem;">Por favor, intente más tarde o verifique su conexión.</p>
+                        <div class="qr-note">
+                            <p>🔄 Si el problema persiste, contacte al área de sistemas</p>
+                        </div>
                     </div>
                 `;
             }
@@ -225,4 +277,3 @@
     </script>
 </body>
 </html>
-Página principal de verificación de carnets
